@@ -1,0 +1,676 @@
+{
+  "version": 3,
+  "mock": true,
+  "agents": [
+    {
+      "id": "manager",
+      "name": "進行管理",
+      "role": "予定・担当の調整",
+      "color": "#53746a",
+      "boss": "owner",
+      "capacity": 3,
+      "execution": {
+        "provider": "claude",
+        "model": "sonnet"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    },
+    {
+      "id": "researcher",
+      "name": "調査担当",
+      "role": "顧客・競合の調査",
+      "color": "#6888ab",
+      "boss": "manager",
+      "capacity": 3,
+      "execution": {
+        "provider": "claude",
+        "model": "sonnet"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    },
+    {
+      "id": "designer",
+      "name": "デザイン担当",
+      "role": "構成・画面デザイン",
+      "color": "#b28a53",
+      "boss": "manager",
+      "capacity": 2,
+      "execution": {
+        "provider": "claude",
+        "model": "sonnet"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    },
+    {
+      "id": "writer",
+      "name": "文章担当",
+      "role": "サービス紹介・事例原稿",
+      "color": "#788b70",
+      "boss": "manager",
+      "capacity": 2,
+      "execution": {
+        "provider": "claude",
+        "model": "sonnet"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    },
+    {
+      "id": "developer",
+      "name": "実装担当",
+      "role": "画面・フォームの実装",
+      "color": "#8b7fa7",
+      "boss": "manager",
+      "capacity": 2,
+      "execution": {
+        "provider": "codex",
+        "model": "default"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    },
+    {
+      "id": "reviewer",
+      "name": "確認担当",
+      "role": "表示・操作・公開の確認",
+      "color": "#b47880",
+      "boss": "owner",
+      "capacity": 2,
+      "execution": {
+        "provider": "codex",
+        "model": "default"
+      },
+      "memory": "この案件の共有資料と、担当する作業の完了条件を確認する。"
+    }
+  ],
+  "projects": [
+    {
+      "id": "website",
+      "name": "サンプル会計事務所｜Webサイト制作",
+      "shortName": "Webサイト制作",
+      "goal": "初回相談の申込を増やす",
+      "due": "2000-01-23",
+      "status": "active",
+      "version": 1,
+      "siteName": "サンプル会計事務所",
+      "scenario": "design",
+      "memory": "対象は開業3年以内の個人事業主。料金と対応範囲を明記。公開前に責任者が確認する。",
+      "tasks": [
+        {
+          "id": "brief",
+          "label": "制作方針を決める",
+          "phase": 0,
+          "agent": "manager",
+          "status": "completed",
+          "initialStatus": "completed",
+          "accepted": true,
+          "initialAccepted": true,
+          "result": "制作方針書",
+          "deps": [],
+          "start": "2000-01-12",
+          "due": "2000-01-12",
+          "purpose": "独立したばかりの事業主から、初回相談を申し込んでもらう。",
+          "contents": [
+            "依頼主：サンプル会計事務所（架空）",
+            "対象：開業から3年以内の個人事業主",
+            "目的：初回相談の申込を月10件獲得",
+            "制作範囲：トップ・サービス・事例・事務所案内・相談フォーム",
+            "公開予定：2000-01-23 15:00"
+          ],
+          "checks": [
+            "目的と対象顧客を確認済み",
+            "制作する5ページと公開日を合意済み"
+          ],
+          "kind": "document",
+          "attempt": 1,
+          "execution": {
+            "provider": "claude",
+            "model": "sonnet"
+          }
+        },
+        {
+          "id": "research",
+          "label": "顧客と競合を調べる",
+          "phase": 0,
+          "agent": "researcher",
+          "status": "completed",
+          "initialStatus": "completed",
+          "accepted": true,
+          "initialAccepted": true,
+          "result": "競合3社の比較",
+          "deps": [],
+          "start": "2000-01-12",
+          "due": "2000-01-13",
+          "purpose": "相談先を選ぶ際に必要な情報を整理する。",
+          "contents": [
+            "A事務所：料金が明確。初回相談の案内がページ下部にある",
+            "B事務所：開業支援の事例が多い。申込項目が11個ある",
+            "C事務所：専門領域が明確。料金は問合せ後に案内",
+            "採用する方針：料金の目安と申込ボタンを最初の画面に置く"
+          ],
+          "checks": [
+            "比較対象3社を確認済み",
+            "比較内容はサンプルとして作成"
+          ],
+          "kind": "document",
+          "attempt": 1,
+          "execution": {
+            "provider": "claude",
+            "model": "sonnet"
+          }
+        },
+        {
+          "id": "structure",
+          "label": "ページ構成を作る",
+          "phase": 1,
+          "agent": "designer",
+          "status": "completed",
+          "initialStatus": "completed",
+          "accepted": true,
+          "initialAccepted": true,
+          "result": "5ページの構成図",
+          "deps": [
+            "brief",
+            "research"
+          ],
+          "start": "2000-01-13",
+          "due": "2000-01-14",
+          "purpose": "料金と対応範囲を確認して、相談申込へ進める構成にする。",
+          "contents": [
+            "トップ：対象顧客・サービス概要・料金目安・申込",
+            "サービス：記帳・確定申告・開業支援",
+            "事例：開業1年目の相談例を2件掲載",
+            "事務所案内：担当税理士・所在地・対応時間",
+            "相談フォーム：名前・メール・相談内容"
+          ],
+          "checks": [
+            "各ページの役割を確認済み",
+            "すべてのページから申込に進める"
+          ],
+          "kind": "sitemap",
+          "attempt": 1,
+          "execution": {
+            "provider": "claude",
+            "model": "sonnet"
+          }
+        },
+        {
+          "id": "design",
+          "label": "画面デザインを作る",
+          "phase": 2,
+          "agent": "designer",
+          "status": "review",
+          "initialStatus": "review",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "トップページのデザイン案",
+          "deps": [
+            "structure"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-16",
+          "purpose": "料金と相談方法が最初の画面で分かる画面にする。",
+          "contents": [
+            "A案：料金と相談ボタンを上部に配置",
+            "B案：事務所の紹介を上部に配置",
+            "担当の提案：初回相談を増やす目的からA案を採用",
+            "確認してほしいこと：情報の優先順位と色使い"
+          ],
+          "checks": [
+            "料金目安を最初の画面に表示",
+            "スマートフォンでも相談ボタンを表示"
+          ],
+          "kind": "design",
+          "attempt": 1,
+          "execution": {
+            "provider": "claude",
+            "model": "sonnet"
+          }
+        },
+        {
+          "id": "copy",
+          "label": "掲載する文章を書く",
+          "phase": 2,
+          "agent": "writer",
+          "status": "running",
+          "initialStatus": "running",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "サービス紹介と相談案内",
+          "deps": [
+            "structure"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-16",
+          "purpose": "専門用語を使わず、相談できる内容と料金を説明する。",
+          "contents": [
+            "見出し：開業後の経理と申告を、税理士に相談",
+            "説明：記帳から申告まで、状況に応じてサポートします。",
+            "料金：月額9,900円から。内容に応じて見積もります。",
+            "申込ボタン：初回相談を申し込む",
+            "対象：料金表の注記と事例2件の文章"
+          ],
+          "checks": [
+            "料金表示に条件と税込表記を付ける",
+            "申込後の連絡方法を記載する"
+          ],
+          "kind": "copy",
+          "attempt": 1,
+          "execution": {
+            "provider": "claude",
+            "model": "sonnet"
+          }
+        },
+        {
+          "id": "build",
+          "label": "サイトを実装する",
+          "phase": 3,
+          "agent": "developer",
+          "status": "waiting",
+          "initialStatus": "waiting",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "確認用のWebサイト",
+          "deps": [
+            "design",
+            "copy"
+          ],
+          "start": "2000-01-16",
+          "due": "2000-01-20",
+          "purpose": "承認された画面と原稿を5ページのサイトにする。",
+          "contents": [
+            "5ページを作成し、共通のメニューを設置",
+            "相談フォームの必須項目と入力エラーを実装",
+            "スマートフォン・タブレット・PCに対応",
+            "確認用の環境でページを共有"
+          ],
+          "checks": [
+            "5ページすべてに移動できる",
+            "フォームの入力エラーが分かる",
+            "横にはみ出す要素がない"
+          ],
+          "kind": "website",
+          "attempt": 1
+        },
+        {
+          "id": "test",
+          "label": "表示とフォームを確認する",
+          "phase": 4,
+          "agent": "reviewer",
+          "status": "waiting",
+          "initialStatus": "waiting",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "動作確認結果",
+          "deps": [
+            "build"
+          ],
+          "start": "2000-01-21",
+          "due": "2000-01-22",
+          "purpose": "公開前に、閲覧と相談申込ができることを確かめる。",
+          "contents": [
+            "5ページのリンク：5 / 5 正常",
+            "スマートフォン表示：390px・768pxで確認",
+            "相談フォーム：正常入力・未入力・メール形式を確認",
+            "確認対象：電話番号と相談受付メールアドレス"
+          ],
+          "checks": [
+            "リンク切れ0件",
+            "主要画面で文字の重なり0件",
+            "フォームの送信先を責任者が確認"
+          ],
+          "kind": "check",
+          "attempt": 1
+        },
+        {
+          "id": "release",
+          "label": "サイトを公開する",
+          "phase": 5,
+          "agent": "developer",
+          "status": "waiting",
+          "initialStatus": "waiting",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "公開サイトと公開後の確認",
+          "deps": [
+            "test"
+          ],
+          "start": "2000-01-23",
+          "due": "2000-01-23",
+          "purpose": "責任者の確認後に公開し、公開先の表示と申込を確認する。",
+          "contents": [
+            "公開先：sample-office.example（架空のURL）",
+            "公開対象：トップ・サービス・事例・事務所案内・相談フォーム",
+            "公開前：現在のサイトを保存",
+            "公開後：5ページの表示とフォームを再確認"
+          ],
+          "checks": [
+            "公開する内容と公開先を責任者が確認",
+            "公開後の表示とフォームを確認"
+          ],
+          "kind": "release",
+          "attempt": 1,
+          "approvalBefore": true
+        }
+      ],
+      "phases": [
+        "企画",
+        "構成",
+        "デザイン・文章",
+        "実装",
+        "確認",
+        "公開"
+      ],
+      "members": [
+        {
+          "agent": "manager",
+          "role": "予定・担当の調整",
+          "brief": ""
+        },
+        {
+          "agent": "researcher",
+          "role": "顧客・競合の調査",
+          "brief": ""
+        },
+        {
+          "agent": "designer",
+          "role": "構成・画面デザイン",
+          "brief": ""
+        },
+        {
+          "agent": "writer",
+          "role": "サービス紹介・事例原稿",
+          "brief": ""
+        },
+        {
+          "agent": "developer",
+          "role": "画面・フォームの実装",
+          "brief": ""
+        },
+        {
+          "agent": "reviewer",
+          "role": "表示・操作・公開の確認",
+          "brief": ""
+        }
+      ],
+      "criteria": [
+        "相談先を選ぶための情報が揃う",
+        "相談フォームから申込できる",
+        "責任者が公開内容を確認する"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "name": "公開済みサイト｜月次更新",
+      "shortName": "月次更新",
+      "goal": "料金とお知らせを最新の内容に更新する",
+      "due": "2000-01-30",
+      "status": "active",
+      "version": 1,
+      "siteName": "月次更新",
+      "memory": "変更箇所だけを更新し、公開前に確認を依頼する。",
+      "tasks": [
+        {
+          "id": "update",
+          "label": "更新内容を確認する",
+          "phase": 0,
+          "agent": "researcher",
+          "status": "running",
+          "initialStatus": "running",
+          "accepted": false,
+          "initialAccepted": false,
+          "result": "更新箇所の一覧",
+          "deps": [],
+          "start": "2000-01-14",
+          "due": "2000-01-16",
+          "purpose": "今月の料金と営業時間の変更を整理する。",
+          "contents": [
+            "営業時間を18:00までに変更",
+            "新しい相談事例を1件追加"
+          ],
+          "checks": [
+            "変更箇所を責任者が確認"
+          ],
+          "kind": "document",
+          "attempt": 1
+        }
+      ],
+      "phases": [
+        "企画",
+        "構成",
+        "デザイン・文章",
+        "実装",
+        "確認",
+        "公開"
+      ],
+      "members": [
+        {
+          "agent": "manager",
+          "role": "予定・担当の調整",
+          "brief": ""
+        },
+        {
+          "agent": "researcher",
+          "role": "顧客・競合の調査",
+          "brief": ""
+        },
+        {
+          "agent": "designer",
+          "role": "構成・画面デザイン",
+          "brief": ""
+        },
+        {
+          "agent": "writer",
+          "role": "サービス紹介・事例原稿",
+          "brief": ""
+        },
+        {
+          "agent": "developer",
+          "role": "画面・フォームの実装",
+          "brief": ""
+        },
+        {
+          "agent": "reviewer",
+          "role": "表示・操作・公開の確認",
+          "brief": ""
+        }
+      ]
+    },
+    {
+      "id": "research",
+      "name": "新サービスの市場調査",
+      "goal": "参入する市場を決める",
+      "status": "active",
+      "due": "2000-01-20",
+      "memory": "小規模事業者向けサービスを対象に、国内の需要と競合を比較する。",
+      "criteria": [
+        "需要と競合の根拠を揃える",
+        "候補を3案に絞り責任者が選ぶ"
+      ],
+      "phases": [
+        "調査",
+        "比較",
+        "判断"
+      ],
+      "members": [
+        {
+          "agent": "researcher",
+          "role": "市場・競合調査",
+          "brief": "国内の個人事業主向けの事務所を調べる。"
+        },
+        {
+          "agent": "writer",
+          "role": "比較資料の整理",
+          "brief": ""
+        },
+        {
+          "agent": "manager",
+          "role": "候補の提案",
+          "brief": ""
+        }
+      ],
+      "tasks": [
+        {
+          "id": "market",
+          "label": "需要を調べる",
+          "phase": 0,
+          "agent": "researcher",
+          "status": "running",
+          "accepted": false,
+          "attempt": 1,
+          "deps": [],
+          "result": "需要の調査メモ",
+          "purpose": "需要を調べる",
+          "contents": [
+            "対象：国内の小規模事業者",
+            "情報：公開統計と利用者調査"
+          ],
+          "checks": [
+            "根拠と結論を責任者が確認する"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-20",
+          "kind": "document"
+        },
+        {
+          "id": "competition",
+          "label": "競合を比較する",
+          "phase": 0,
+          "agent": "writer",
+          "status": "review",
+          "accepted": false,
+          "attempt": 1,
+          "deps": [],
+          "result": "競合比較表",
+          "purpose": "競合を比較する",
+          "contents": [
+            "比較軸：対象顧客・価格・提供範囲",
+            "候補3社の違いを整理"
+          ],
+          "checks": [
+            "根拠と結論を責任者が確認する"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-20",
+          "kind": "document"
+        },
+        {
+          "id": "options",
+          "label": "候補を3案に絞る",
+          "phase": 1,
+          "agent": "manager",
+          "status": "waiting",
+          "accepted": false,
+          "attempt": 1,
+          "deps": [
+            "market",
+            "competition"
+          ],
+          "result": "市場候補3案",
+          "purpose": "候補を3案に絞る",
+          "contents": [
+            "需要と競合の根拠から3案を比較"
+          ],
+          "checks": [
+            "根拠と結論を責任者が確認する"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-20",
+          "kind": "document"
+        },
+        {
+          "id": "decision",
+          "label": "参入先を提案する",
+          "phase": 2,
+          "agent": "manager",
+          "status": "waiting",
+          "accepted": false,
+          "attempt": 1,
+          "deps": [
+            "options"
+          ],
+          "result": "参入先の提案",
+          "purpose": "参入先を提案する",
+          "contents": [
+            "推奨する市場と理由",
+            "責任者の確認後に完了"
+          ],
+          "checks": [
+            "根拠と結論を責任者が確認する"
+          ],
+          "start": "2000-01-14",
+          "due": "2000-01-20",
+          "kind": "document"
+        }
+      ]
+    }
+  ],
+  "phases": [
+    "企画",
+    "構成",
+    "デザイン・文章",
+    "実装",
+    "確認",
+    "公開"
+  ],
+  "connections": [
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "status": "disconnected",
+      "authentication": "cli-login"
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "status": "disconnected",
+      "authentication": "cli-login"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "design-review",
+      "project": "website",
+      "title": "デザイン案を確認",
+      "day": "2000-01-16",
+      "time": "10:00",
+      "repeat": "once",
+      "enabled": true,
+      "agent": "designer"
+    },
+    {
+      "id": "publish",
+      "project": "website",
+      "title": "公開前の最終確認",
+      "day": "2000-01-23",
+      "time": "14:00",
+      "repeat": "once",
+      "enabled": true,
+      "agent": "reviewer"
+    },
+    {
+      "id": "daily",
+      "project": "maintenance",
+      "title": "掲載内容を確認",
+      "day": "2000-01-15",
+      "time": "09:00",
+      "repeat": "weekly",
+      "enabled": true,
+      "agent": "researcher"
+    }
+  ],
+  "sharedMemory": "未確認の料金・連絡先を公開しない。作業結果には変更点と確認事項を添える。",
+  "history": [
+    {
+      "project": "website",
+      "text": "ページ構成を承認。デザインと文章の作成を開始。",
+      "time": "2000-01-14T09:00:00+09:00"
+    },
+    {
+      "project": "website",
+      "text": "トップ画面の見本が届きました。",
+      "time": "2000-01-14T10:00:00+09:00"
+    }
+  ],
+  "messages": [],
+  "meetings": [],
+  "clock": "2000-01-14T10:00:00+09:00"
+}

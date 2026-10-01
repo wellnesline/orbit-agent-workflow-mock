@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "style": "job-agent-directed-graph",
+  "title": "モックの準備工程",
+  "source_snapshot_sha256": "406ed8baee3522cd5d63c7bb9f245c299f3e2e9a6c0b6f410274f50edd87f31d",
+  "nodes": [
+    {
+      "id": "request",
+      "label": "準備を依頼",
+      "kind": "job",
+      "job": "模擬データの準備を受け付ける",
+      "implementation": "n8n Webhook",
+      "explanation": "専用の認証付きローカル経路。公開ページからは実行できません。",
+      "source": {
+        "engine": "n8n",
+        "node_id": "n0"
+      }
+    },
+    {
+      "id": "dify",
+      "label": "架空データを組み立てる",
+      "kind": "program",
+      "job": "AI組織と案件のサンプルを作る",
+      "implementation": "Dify Code / Python",
+      "explanation": "実Difyで固定データを組み立てます。LLM推論は行いません。",
+      "source": {
+        "engine": "dify",
+        "node_id": "n1"
+      }
+    },
+    {
+      "id": "validate",
+      "label": "結果を確かめる",
+      "kind": "program",
+      "job": "Difyの成功と出力を検査",
+      "implementation": "n8n Code",
+      "explanation": "成功状態と出力契約を確認してからjobへ渡します。",
+      "source": {
+        "engine": "n8n",
+        "node_id": "n2"
+      }
+    },
+    {
+      "id": "job",
+      "label": "模擬jobを保存",
+      "kind": "job",
+      "job": "重複しない模擬実行を作る",
+      "implementation": "PoC adapter / SQLite",
+      "explanation": "同じ冪等キーの依頼は同じjob IDを返します。",
+      "source": {
+        "engine": "n8n",
+        "node_id": "n3"
+      }
+    },
+    {
+      "id": "observe",
+      "label": "状態を観測",
+      "kind": "program",
+      "job": "jobの完了と結果を取得",
+      "implementation": "n8n HTTP Request",
+      "explanation": "短い模擬jobを待って取得。長時間実AI運用の証明ではありません。",
+      "source": {
+        "engine": "n8n",
+        "node_id": "n5"
+      }
+    },
+    {
+      "id": "result",
+      "label": "操作モックへ渡す",
+      "kind": "job",
+      "job": "検証済みの架空データを表示",
+      "implementation": "seed.json / Browser",
+      "explanation": "実出力をseed.jsonへ保存。公開画面の操作はブラウザ内だけで完結します。",
+      "source": {
+        "engine": "n8n",
+        "node_id": "n6"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "request",
+      "target": "dify",
+      "label": "結果を渡す"
+    },
+    {
+      "source": "dify",
+      "target": "validate",
+      "label": "結果を渡す"
+    },
+    {
+      "source": "validate",
+      "target": "job",
+      "label": "結果を渡す"
+    },
+    {
+      "source": "job",
+      "target": "observe",
+      "label": "結果を渡す"
+    },
+    {
+      "source": "observe",
+      "target": "result",
+      "label": "結果を渡す"
+    }
+  ]
+}
